@@ -1,0 +1,9 @@
+function R=get_r(v1,v2)
+v1=v1/norm(v1);
+v2=v2/norm(v2);
+A=[v1(1) -v1(2); v1(2) v1(1)];
+B=v2;
+cs=A\B;
+c=cs(1);
+s=cs(2);
+R=[c -s; s c];
