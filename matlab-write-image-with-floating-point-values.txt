@@ -1,0 +1,17 @@
+%http://stackoverflow.com/questions/13777444/matlab-write-image-with-floating-point-values
+
+%timg =single(19.5*ones(100,100));
+
+function save_tiff(timg, file_name)
+t = Tiff(file_name, 'w'); 
+tagstruct.ImageLength = size(timg, 1); 
+tagstruct.ImageWidth = size(timg, 2); 
+tagstruct.Compression = Tiff.Compression.None; 
+tagstruct.SampleFormat = Tiff.SampleFormat.IEEEFP; 
+tagstruct.Photometric = Tiff.Photometric.MinIsBlack; 
+tagstruct.BitsPerSample = 32;
+tagstruct.SamplesPerPixel = 1;
+tagstruct.PlanarConfiguration = Tiff.PlanarConfiguration.Chunky; 
+t.setTag(tagstruct); 
+t.write(timg); 
+t.close();

@@ -1,0 +1,9 @@
+function [P2, M2] =SmoothWithMask(P, M, K)
+P=double(P);
+M=double(M);
+P= P.*M;
+PSum =conv2(P, K, 'same');
+MSum =conv2(M, K, 'same');
+P2 =PSum./(MSum+0.0001);
+M2 =MSum> (length(K)/2);
+P2 =P2 .*M2;

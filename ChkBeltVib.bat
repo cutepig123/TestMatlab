@@ -1,0 +1,1 @@
+python J:\app\User\aeejshe\python27_2\ChkBeltVib.py %1

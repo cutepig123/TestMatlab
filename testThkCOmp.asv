@@ -1,0 +1,201 @@
+function main
+close all, clc,clear
+
+Taf9Pts_all =[198.5	207.81	215.45	194.8	202.85	212.61	201.95	206.6	217.39
+181.91	184.54	190.31	180.73	182.75	189.57	186.53	189.54	197.92
+194.06	197.11	195.78	196.71	199.98	196.38	204.93	208.49	205
+185.81	198.29	195.78	184.84	200.73	195.95	192.11	207	202.68
+189.49	195.55	197.9	184.12	191.2	194.91	191.89	197.34	199.45
+181.1	229.29	208.65	174.12	213.61	195.13	181.87	204.69	185.91
+184.76	204.3	220.3	174.83	190.77	206.32	175.29	183.22	196.07
+190.29	195.47	198.3	184.39	189.78	193.33	189.13	194.71	198.43
+194.65	192.32	184.56	190	186.22	180.43	197.75	195.1	187.6
+193.62	190.69	184.06	190.32	185.62	180.77	197.77	195.01	188.32
+196.02	205.87	213.35	198	207.14	215.16	202.66	207.93	218.71
+180.27	182.86	188.47	183.93	187.45	193.38	188.11	191.12	200.01
+192.87	194.43	192.73	201.01	204.57	200.04	205.18	209.53	205.45
+184.41	196.03	194.06	188.55	204.62	199.17	193	208.42	203.89
+187.91	194.06	195.13	188.02	194.73	198.82	192.68	198.85	201.53
+178.54	228.09	206.92	177.32	215.88	198.57	181.42	205.11	187.11
+183	202.2	217.91	180.17	197.6	209.53	176.26	184.14	197.93
+188.3	193.08	196.73	189.29	193.7	197.13	190.52	195.82	199.53
+192.25	188.6	182.21	193.96	189.49	183.43	198.87	195.17	188.4
+192.2	189.15	181.17	193.92	188.64	183.05	198.91	196.51	190.34
+196.07	205	214.01	198.96	207.6	215.67	202.11	207.59	219.27
+180.58	182.38	188.36	184.75	186.77	193.55	188.31	191.03	199.17
+191.4	195.62	193.69	200.37	205.21	199.92	205.8	209.35	205.11
+183.95	196.38	193.78	188.1	204.37	200.65	192.78	207.64	203.47
+188.46	194.19	195.85	189.81	196.26	200.78	193.28	198.92	200.98
+179.25	227.31	205.93	178.71	216.89	198.83	181.33	204.85	186.97
+182.55	203.42	217.28	179.15	195.22	210.21	176.77	184.09	197.7
+188.96	193.69	196.51	190.02	194.72	197.87	191	196.16	199.64
+191.91	189.66	182.88	194.25	189.71	184.34	198.68	195.11	188.77
+191.69	188.22	181.55	193.72	189.8	183.01	198.99	194	189.99
+];
+
+DT_all=[3.810799	-2.120178	-8.051155
+3.518394	-2.28838	-8.095154
+3.459045	-2.493919	-8.446884
+3.885284	-2.302128	-8.48954
+3.306992	-2.911758	-9.130508
+3.737892	-2.588074	-8.91404
+3.893105	-2.44664	-8.786385
+3.179108	-2.708733	-8.596573
+3.320305	-2.586529	-8.493362
+2.93943	-2.807873	-8.555176
+-1.039932	-2.497475	-3.955017
+-1.615047	-2.567375	-3.519703
+-1.535164	-2.343143	-3.151123
+-1.75404	-2.523405	-3.29277
+-1.624828	-2.191759	-2.75869
+-2.025177	-2.630802	-3.236427
+-1.139145	-1.979321	-2.819496
+-1.585953	-2.198086	-2.810219
+-1.651535	-1.987259	-2.322983
+-1.728168	-2.040567	-2.352966
+-1.591633	-2.034739	-2.477844
+-1.641586	-2.017849	-2.394112
+-0.99408	-1.682667	-2.371254
+-1.586433	-1.823463	-2.060493
+-1.495136	-1.607336	-1.719536
+-2.160942	-2.135265	-2.109589
+-1.360035	-1.697088	-2.034142
+-1.505325	-1.736034	-1.966743
+-1.745399	-1.611229	-1.477058
+-2.338779	-2.042475	-1.74617
+];
+
+Taf_all =[ mean(Taf9Pts_all(:,1:3),2) mean(Taf9Pts_all(:,4:6),2) mean(Taf9Pts_all(:,7:9),2) ];
+T_all=Taf_all - DT_all;
+N=size(T_all,1);    %Total rows
+M=10;           %total wafers
+T9Pts_all=Taf9Pts_all -[DT_all(:,1)*ones(1, 3) DT_all(:,2)*ones(1, 3) DT_all(:,3)*ones(1, 3)];
+
+%compensate by each wafer
+% for i=1:10
+%     Taf =Taf_all([i i+10 i+20],:);
+%     DT =DT_all([i i+10 i+20],:);
+%     T=Taf - DT;
+% 
+%     N=size(T,1);
+%     A=[DT(:,1)-DT(:,3)  ones(N,1)];
+%     b=-[T(:,2)+DT(:,3)];
+%     X=A\b;
+% 
+%     TExp =T(:,2) + X(1)*DT(:,1) + (1-X(1))*DT(:,3);
+%     Err= TExp+X(2);
+%     
+%     sprintf('X %f %f AVgT %f AvgTaf %f TExp %f Err %f\n',X(1),X(2),mean(T(2,:)),mean(Taf(2,:)),mean(TExp),max(Err))
+% end
+
+%compensate by all wafers
+
+A=[DT_all(:,1)-DT_all(:,3)  zeros(N,M)];
+b=-[T_all(:,2)+DT_all(:,3)];
+for i=1:10
+    A(i, 1+i)=1;
+    A(i+10, 1+i)=1;
+    A(i+20, 1+i)=1;
+end
+X=A\b
+a=X(1);
+
+
+DTOptpair1=a*DT_all(:,1) + (1-a)*DT_all(:,3);
+DTOpt_all=[DT_all(:,1) DTOptpair1 DT_all(:,3)];
+TOpt_all =T_all + DTOpt_all;
+TOpt9Pts_all=T9Pts_all +[DT_all(:,1)*ones(1, 3) DTOptpair1*ones(1, 3) DT_all(:,3)*ones(1, 3)];
+
+
+RangeTall=zeros(M,3);
+%plot the range of 'pair 1 average thickness without compensation'
+RangeTall(:,1)=myRefactorAndCalc(T_all, M, @(Tsub)(max(Tsub(:,2))-min(Tsub(:,2))));
+%plot the thickness variation of pair 1 with avrerage compensation
+RangeTall(:,2)=myRefactorAndCalc(Taf_all, M, @(Tsub)(max(Tsub(:,2))-min(Tsub(:,2))));
+%plot the thickness variation of pair 1 with optimal compensation
+RangeTall(:,3)=myRefactorAndCalc(TOpt_all, M, @(Tsub)(max(Tsub(:,2))-min(Tsub(:,2))));
+
+figure
+plot(RangeTall)
+title('pair 1 average thickness repeatability')
+xlabel('Wafer')
+ylabel('Range(um)')
+legend('without compensation','average compensation','optimal compensation')
+%ylim([0 5])
+
+RangeTall=zeros(M,3);
+%plot the range of 'pair 1 average thickness without compensation'
+RangeTall(:,1)=myRefactorAndCalc(T_all, M, @(Tsub)(max(Tsub(:,1))-min(Tsub(:,1))));
+%plot the thickness variation of pair 1 with avrerage compensation
+RangeTall(:,2)=myRefactorAndCalc(Taf_all, M, @(Tsub)(max(Tsub(:,1))-min(Tsub(:,1))));
+%plot the thickness variation of pair 1 with optimal compensation
+RangeTall(:,3)=myRefactorAndCalc(TOpt_all, M, @(Tsub)(max(Tsub(:,1))-min(Tsub(:,1))));
+
+figure
+plot(RangeTall)
+title('pair 0 average thickness repeatability')
+xlabel('Wafer')
+ylabel('Range(um)')
+legend('without compensation','average compensation','optimal compensation')
+
+RangeTall=zeros(M,3);
+%plot the range of 'pair 1 average thickness without compensation'
+RangeTall(:,1)=myRefactorAndCalc(T_all, M, @(Tsub)(max(Tsub(:,3))-min(Tsub(:,3))));
+%plot the thickness variation of pair 1 with avrerage compensation
+RangeTall(:,2)=myRefactorAndCalc(Taf_all, M, @(Tsub)(max(Tsub(:,3))-min(Tsub(:,3))));
+%plot the thickness variation of pair 1 with optimal compensation
+RangeTall(:,3)=myRefactorAndCalc(TOpt_all, M, @(Tsub)(max(Tsub(:,3))-min(Tsub(:,3))));
+
+figure
+plot(RangeTall)
+title('pair 2 average thickness repeatability')
+xlabel('Wafer')
+ylabel('Range(um)')
+legend('without compensation','average compensation','optimal compensation')
+
+%plot TTV variation
+
+RangeTall=zeros(10,3);
+RangeTall(:,1)=myRefactorAndCalc(T9Pts_all, M, @myTTV);
+RangeTall(:,2)=myRefactorAndCalc(Taf_all, M, @myTTV);
+RangeTall(:,3)=myRefactorAndCalc(TOpt_all, M, @myTTV);
+figure
+plot(RangeTall)
+title('TTV repeatability')
+xlabel('Wafer')
+ylabel('Range(um)')
+legend('without compensation','average compensation','optimal compensation')
+
+RangeT=zeros(10,1);
+for i=1:10
+    Taf =Taf_all([i i+10 i+20],:);
+    T=Taf;
+    TTV=max(T,[],2)-min(T,[],2);
+    RangeT(i)=max(TTV)-min(TTV);
+end
+RangeTall(:,2)=RangeT;
+
+RangeT=zeros(10,1);
+for i=1:10
+    Taf =Taf_all([i i+10 i+20],:);
+    DT =DT_all([i i+10 i+20],:);
+    T=Taf - DT;
+    a= X(1);
+    TExp =T(:,2) + a*DT(:,1) + (1-a)*DT(:,3);
+    Taf(:,2)=TExp;
+    TTV=max(Taf,[],2)-min(Taf,[],2);
+    RangeT(i)=max(TTV)-min(TTV);
+end
+RangeTall(:,3)=RangeT;
+
+figure
+plot(RangeTall)
+title('N Point TTV range comparison')
+xlabel('Wafer')
+ylabel('Range(um)')
+legend('without compensation','average compensation','optimal compensation')
+
+%multiple rows, each row contains N point thickness
+function Res=myTTV(T)
+TTV=max(T,[],2)-min(T,[],2);
+Res=max(TTV)-min(TTV);

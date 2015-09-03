@@ -1,0 +1,2 @@
+Z:\IMAGEDB\APP\Function\RawSolarWafer\Calibration\MultiLevel3DCalTest1\20150617\wafer1\top\5.bmp	0.000000	0.000000
+Z:\IMAGEDB\APP\Function\RawSolarWafer\Calibration\MultiLevel3DCalTest1\20150617\wafer1\top\6.bmp	-2.090000	-2.090000
